@@ -1,0 +1,19 @@
+{
+	"manifest_version": 2,
+	"name": "ETeatcherAgenda",
+	"version": "0.1",
+
+	"description": "Sync your eTeacher agenda with your google agenda.",
+
+	"icons": {
+		"48": "icon/icon.png"
+	},
+
+	"permissions": ["storage"],
+	"content_scripts": [
+		{
+			"matches": ["*://office.eteachergroup.com/*"],
+			"js": ["eteacherAgenda.js"]
+		}
+	]
+}
