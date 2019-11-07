@@ -46,7 +46,7 @@ function syncGoogleCalendar() {
   const classesInfo = JSON.parse(localStorage.getItem("classesInfo"))
   if (!classesInfo) return
   classesInfo.forEach((classe, id) => {
-    console.log(classe)
+    //console.log(classe)
     if (!classe.slot) return //is in future semester
     doFetch("https://www.googleapis.com/calendar/v3/calendars/primary/events?q=" + classe.name).then(existing => {
       //console.log("Existing", existing)

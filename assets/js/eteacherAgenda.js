@@ -51,7 +51,7 @@ function syncCalendar() {
 
 	localStorage.setItem("classesInfo", JSON.stringify(classes))
 	$('<button/>').text('Sync to Google Calendar').css("margin-left", 10)
-		.click(() => browser.runtime.sendMessage({ classesInfo: localStorage.getItem("classesInfo") }).then((rep) => { }))
+		.click(() => browser.runtime.sendMessage({ classesInfo: localStorage.getItem("classesInfo") }))
 		.appendTo($("h1"))
 	$("<p/>").text("don't forget to display future semester if you want to sync incomming classes.").appendTo($("h1"))
 }

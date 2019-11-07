@@ -4,8 +4,8 @@
 	"version": "0.1",
 	"applications": {
 		"gecko": {
-			"id": "eTEacherAgenda@mozilla.org",
-			"strict_min_version": "40"
+			"id": "eTEacherAgenda@adrien-chaix.org",
+			"strict_min_version": "42.0"
 		}
 	},
 
