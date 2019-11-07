@@ -2,18 +2,28 @@
 	"manifest_version": 2,
 	"name": "ETeatcherAgenda",
 	"version": "0.1",
+	"applications": {
+		"gecko": {
+			"id": "eTEacherAgenda@mozilla.org",
+			"strict_min_version": "40"
+		}
+	},
 
 	"description": "Sync your eTeacher agenda with your google agenda.",
 
 	"icons": {
 		"48": "icon/icon.png"
 	},
+	"permissions": ["storage", "identity", "notifications", "*://www.googleapis.com/*", "*://accounts.google.com/*"],
 
-	"permissions": ["storage"],
+	"background": {
+		"scripts": ["assets/js/moment-fr.js", "background/authorize.js", "background/main.js"]
+	},
+
 	"content_scripts": [
 		{
 			"matches": ["*://office.eteachergroup.com/*"],
-			"js": ["eteacherAgenda.js"]
+			"js": ["assets/js/moment-fr.js", "assets/js/jquery-3.4.1.min.js", "assets/js/eteacherAgenda.js"]
 		}
 	]
 }
