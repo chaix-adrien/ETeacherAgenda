@@ -4,6 +4,11 @@ function handleLoginPage() {
   const username = localStorage.getItem("username")
 
 
+  if (checked && pwd && username) {
+    $("#UserName").val(username)
+    $("#Password").val(pwd)
+    $("#SubmitLoginForm").click()
+  }
   //create button & checkbox
   $('<input />', { type: 'checkbox', id: 'rememberMe', text: "coucou", checked: checked }).appendTo($("#SubmitLoginForm").parent());
   $("<label>Remember me</label>").appendTo($("#SubmitLoginForm").parent())
@@ -16,9 +21,4 @@ function handleLoginPage() {
     }
   })
   //check if need to auto login
-  if (checked && pwd && username) {
-    $("#UserName").val(username)
-    $("#Password").val(pwd)
-    $("#SubmitLoginForm").click()
-  }
 }
