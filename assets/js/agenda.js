@@ -1,6 +1,3 @@
-function dispatchByURL(matchs) {
-	matchs.forEach(match => document.URL.indexOf(match.path) !== -1 ? match.goTo() : null)
-}
 
 function strToDate(str, end = false) {
 	let date = moment(str.split(",")[1], "MMMM D")
@@ -55,14 +52,3 @@ function syncCalendar() {
 		.appendTo($("h1"))
 	$("<p/>").text("don't forget to display future semester if you want to sync incomming classes.").appendTo($("h1"))
 }
-
-dispatchByURL([
-	{
-		path: "/Courses/schedule.asp",
-		goTo: () => syncCalendar(),
-	},
-	{
-		path: "ourses/courses.asp",
-		goTo: () => loadClasses(),
-	},
-])
