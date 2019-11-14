@@ -15,12 +15,16 @@ function loadClasses() {
 	const infos = []
 	for (let i = 4; i < classesRow.length; i++) {
 		const childs = $(classesRow[i]).children()
+		console.log(childs[1])
 		infos.push({
 			name: childs[3].innerText + " " + childs[4].innerText,
 			start: strToDate(childs[5].innerText).toString(),
-			end: strToDate(childs[6].innerText, true).toString()
+			end: strToDate(childs[6].innerText, true).toString(),
+			courseID: childs[1].firstChild.href.split("CourseID=")[1],
+			exoUrl: childs[1].firstChild.href
 		})
 	}
+	console.log(infos)
 	localStorage.setItem("classesInfo", JSON.stringify(infos))
 }
 
