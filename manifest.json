@@ -28,6 +28,7 @@
 				"assets/js/jquery-3.4.1.min.js",
 				"assets/js/login.js",
 				"assets/js/agenda.js",
+				"assets/js/home.js",
 				"assets/js/setting.js",
 				"assets/js/dispatcher.js"
 			]

@@ -19,4 +19,8 @@ dispatchByURL([
     path: "MyProfile.asp",
     goTo: () => settingPage(),
   },
+  {
+    path: "default.asp",
+    goTo: () => homePage(),
+  },
 ])
