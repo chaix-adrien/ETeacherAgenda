@@ -1,16 +1,16 @@
 function handleLoginPage() {
-  const checked = localStorage.getItem("rememberMe") === "y"
+  const rememberMe = localStorage.getItem("rememberMe") === "y"
   const pwd = localStorage.getItem("password")
   const username = localStorage.getItem("username")
-
-
-  if (checked && pwd && username) {
-    $("#UserName").val(username)
-    $("#Password").val(pwd)
+  const autoLogin = localStorage.getItem("autoLogin") === "y"
+  $("#UserName").val(username)
+  $("#Password").val(pwd)
+  console.log(username, pwd, rememberMe, autoLogin)
+  if (autoLogin && pwd && username) {
     $("#SubmitLoginForm").click()
   }
   //create button & checkbox
-  $('<input />', { type: 'checkbox', id: 'rememberMe', text: "coucou", checked: checked }).appendTo($("#SubmitLoginForm").parent());
+  $('<input />', { type: 'checkbox', id: 'rememberMe', text: "coucou", checked: rememberMe }).appendTo($("#SubmitLoginForm").parent());
   $("<label>Remember me</label>").appendTo($("#SubmitLoginForm").parent())
 
   $("#SubmitLoginForm").click(() => {

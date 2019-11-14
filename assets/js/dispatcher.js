@@ -15,4 +15,8 @@ dispatchByURL([
     path: "login.asp",
     goTo: () => handleLoginPage(),
   },
+  {
+    path: "MyProfile.asp",
+    goTo: () => settingPage(),
+  },
 ])
