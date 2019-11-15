@@ -63,8 +63,10 @@ function homePage() {
     //Parse response and add button
     var checkboxs = Array.prototype.slice.call($(doc).find(".publish-unit"))
     const lastPublish = checkboxs.find((d) => !d.checked).parentNode.childNodes[1].textContent
-    $('<button/>').text(lastPublish).css("margin-left", 10)
-      .click(() => { })
+    //console.log(getPublishContentURL(classeInfo.courseID))
+    $('<button/>').text(lastPublish + "1").css("margin-left", 10)
+      .click(() => window.open(getPublishContentURL(classeInfo.courseID), '_blank'))
       .appendTo($(currentClass[i]).parent())
   }
 }
+//http://office.eteachergroup.com/eTeachert5774041-6F54C40B5B1C372CD8D5A54685BB49C5/teachers/OfficeEx/login/startIW.asp?LessonID=2107569
