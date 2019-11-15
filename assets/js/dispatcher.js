@@ -3,6 +3,7 @@ function dispatchByURL(matchs) {
   matchs.forEach(match => document.URL.toLowerCase().indexOf(match.path.toLowerCase()) !== -1 ? match.goTo() : null)
 }
 
+console.log("start")
 dispatchByURL([
   {
     path: "/courses/schedule.asp",
