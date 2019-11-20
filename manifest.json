@@ -26,6 +26,7 @@
 			"js": [
 				"assets/js/moment-fr.js",
 				"assets/js/jquery-3.4.1.min.js",
+				"assets/js/historic.js",
 				"assets/js/login.js",
 				"assets/js/agenda.js",
 				"assets/js/home.js",
