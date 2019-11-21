@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
-	"name": "ETeatcherAgenda",
-	"version": "0.1",
+	"name": "ETeatcher+",
+	"version": "1.0",
 	"applications": {
 		"gecko": {
 			"id": "eTEacherAgenda@adrien-chaix.org",
@@ -9,7 +9,7 @@
 		}
 	},
 
-	"description": "Sync your eTeacher agenda with your google agenda.",
+	"description": "Improve your teacher office with auto report and google calendar sync.",
 
 	"icons": {
 		"48": "icon/icon.png"
