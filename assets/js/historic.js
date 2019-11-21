@@ -50,6 +50,15 @@ class Historik {
     console.log("getNotValidated", this.getHistoricAsArray().filter(classe => !classe.validated))
     return out
   }
+
+  getCourseByDate(className, date) {
+    const courses = this.historic[className]
+    if (!courses) return null
+    return this.getHistoricAsArray().filter(c => c.class.name === className).find(c => {
+      const classDate = moment(c.date)
+      return classDate.diff(date, "days") === 0
+    })
+  }
 }
 
 const Historic = new Historik()

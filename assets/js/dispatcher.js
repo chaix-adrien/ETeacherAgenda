@@ -24,4 +24,9 @@ dispatchByURL([
     path: "default.asp",
     goTo: () => homePage(),
   },
+  {
+    path: "reports/salary",
+    goTo: () => reportPage(),
+  },
 ])
+reports / salary

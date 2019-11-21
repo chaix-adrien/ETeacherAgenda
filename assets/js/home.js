@@ -31,6 +31,44 @@ function getPublishContentURL(classId) {
 }
 
 
+function handleNotValidatedClasses(anchor, onClick) {
+  const notValidated = Historic.getNotValidated()
+  console.log("handleHisto", notValidated)
+
+  function addDateLine(date) {
+    $("<h3/>").text(date.format("dddd") + " " + date.format('LL')).insertBefore(anchor)
+  }
+
+  function addCourseLine(course, courseDate) {
+    const div = $("<div/>").css("display", "flex").css("align-items", "center").insertBefore(anchor)
+    $("<h4/>").css("margin", 0).text(course.class.name + " -- " + course.unit).appendTo(div)
+    $("<button/>").text("Missed").css("margin-left", "10px").css("background-color", "#e57373").click(() => {
+      Historic.setValidated(course.class.name, course.id, "missed")
+      div.remove();
+      onClick()
+    }).appendTo(div)
+    $("<button/>").text("Done").css("margin-left", "10px").css("background-color", "#4caf50").click(() => {
+      Historic.setValidated(course.class.name, course.id, "done")
+      div.remove();
+      onClick()
+    }).appendTo(div)
+  }
+
+  let lastDate = moment().year(2010)
+  console.log("HERE", notValidated)
+  if (notValidated.length) {
+    $("<h2/>").text("Waiting for report.").insertBefore(anchor)
+    anchor.css("margin-top", "40px")
+  }
+  notValidated.forEach(course => {
+    const courseDate = moment(course.date)
+    if (courseDate.diff(lastDate, 'days') >= 1)
+      addDateLine(courseDate)
+    addCourseLine(course, courseDate)
+    lastDate = courseDate
+  })
+}
+
 function homePage() {
   function addNoDataWarning() {
     if (!classes) {
@@ -90,57 +128,10 @@ function homePage() {
 
   }
 
-  function handleNotValidatedClasses() {
-    const notValidated = Historic.getNotValidated()
-    console.log("handleHisto", notValidated)
-
-    function addDateLine(date) {
-      $("<h3/>").text(date.format("dddd") + " " + date.format('LL')).insertBefore(anchor)
-    }
-
-    function addCourseLine(course, courseDate) {
-      const div = $("<div/>").css("display", "flex").css("align-items", "center").insertBefore(anchor)
-      $("<h4/>").css("margin", 0).text(course.class.name + " -- " + course.unit).appendTo(div)
-      $("<button/>").text("Missed").css("margin-left", "10px").css("background-color", "#e57373").click(() => {
-        Historic.setValidated(course.class.name, course.id, "missed")
-        div.remove();
-      }).appendTo(div)
-      $("<button/>").text("Done").css("margin-left", "10px").css("background-color", "#4caf50").click(() => {
-        Historic.setValidated(course.class.name, course.id, "done")
-        div.remove();
-      }).appendTo(div)
-    }
-
-    const anchor = $("h2:contains('Lessons On Air')")
-    let lastDate = moment().year(2010)
-    if (notValidated.length)
-      $("<h2/>").text("Waiting for report.").insertBefore(anchor)
-    notValidated.forEach(course => {
-      const courseDate = moment(course.date)
-      if (courseDate.diff(lastDate, 'days') >= 1)
-        addDateLine(courseDate)
-      addCourseLine(course, courseDate)
-      lastDate = courseDate
-    })
-  }
-
-
   const classes = JSON.parse(localStorage.getItem("classesInfo"))
-  /*console.log("handle classes", classes)
-  localStorage.removeItem("classesHistoric")
-  const classeInfo = classes.find(c => c.name === "Build Your First App Beginners - ELEM - FRA 47")
-  console.log("info", classeInfo, localStorage.getItem("classesHistoric"))
-  let historic = JSON.parse(localStorage.getItem("classesHistoric"))
-  console.log("histo start", historic)
-  historic = historic || {}
-  historic["Build Your First App Beginners - ELEM - FRA 47"] = historic["Build Your First App Beginners - ELEM - FRA 47"] || {}
-  historic["Build Your First App Beginners - ELEM - FRA 47"]["classeInfo"] = classeInfo
-  historic["Build Your First App Beginners - ELEM - FRA 47"][9] = { date: Date.now(), unit: "Unit 9: beauty", validated: false }
-  console.log("pre save", historic)
-  localStorage.setItem("classesHistoric", JSON.stringify(historic))*/
   if (addNoDataWarning()) return
   handleCurrentClasses()
-  handleNotValidatedClasses()
+  handleNotValidatedClasses($("h2:contains('Lessons On Air')"), () => null)
   //search all current classes.
 
 }

@@ -30,6 +30,7 @@
 				"assets/js/login.js",
 				"assets/js/agenda.js",
 				"assets/js/home.js",
+				"assets/js/report.js",
 				"assets/js/setting.js",
 				"assets/js/dispatcher.js"
 			]
