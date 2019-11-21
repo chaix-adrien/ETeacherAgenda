@@ -5,7 +5,8 @@ class Historik {
   }
 
   getHistoric() {
-    const hist = this.historic || JSON.parse(localStorage.getItem("classesHistoric")) || {}
+    //localStorage.removeItem("classesHistoric")
+    const hist = JSON.parse(localStorage.getItem("classesHistoric")) || {}
     console.log("Get historic", hist)
     return hist
   }
@@ -14,14 +15,18 @@ class Historik {
     console.log("add class to historic", classeInfo)
     this.historic[classeInfo.name] = this.historic[classeInfo.name] || {}
     this.historic[classeInfo.name]["classeInfo"] = classeInfo
-    this.historic[classeInfo.name][lastPublish.id] = { date: Date.now(), unit: lastPublish.name, validated: false }
+    if (!this.historic[classeInfo.name][lastPublish.id])
+      this.historic[classeInfo.name][lastPublish.id] = { date: Date.now(), unit: lastPublish.name, validated: false }
     console.log("save this historic", this.historic)
     localStorage.setItem("classesHistoric", JSON.stringify(this.historic))
   }
 
-  setValidated(course, state) {
-    this.getHistoricAsArray().find(c => c === course).validated = state
+  setValidated(className, courseId, state) {
+    console.log("set validated", className, courseId, state)
+    this.historic[className][courseId].validated = state
+    console.log("set THEN", JSON.stringify(this.historic))
     localStorage.setItem("classesHistoric", JSON.stringify(this.historic))
+    console.log("after save", JSON.parse(localStorage.getItem("classesHistoric")))
   }
 
   getHistoricAsArray() {
@@ -42,7 +47,7 @@ class Historik {
 
   getNotValidated() {
     const out = this.getHistoricAsArray().filter(classe => !classe.validated).sort((a, b) => a.date - b.date)
-    console.log("getNotValidated", out)
+    console.log("getNotValidated", this.getHistoricAsArray().filter(classe => !classe.validated))
     return out
   }
 }

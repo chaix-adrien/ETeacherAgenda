@@ -32,15 +32,6 @@ function getPublishContentURL(classId) {
 
 
 function homePage() {
-  function getLastExoPublished(classId) {
-    let url = getPublishContentURL(classId)
-    let client = new HttpClient();
-    let response = client.getSync(url);
-    let parser = new DOMParser();
-    var htmlDoc = parser.parseFromString(response, 'text/html');
-    return getLastPublishedOfClassObject(htmlDoc, skip)
-  }
-
   function addNoDataWarning() {
     if (!classes) {
       $("<h1/>").text("Go to your classes sumary to load usefull classes infos").appendTo($("h1"))
@@ -57,15 +48,25 @@ function homePage() {
       return parser.parseFromString(response, 'text/html');
     }
 
-    function getLastPublish(doc) {
+    function getToPublish(doc) {
       const checkboxs = Array.prototype.slice.call($(doc).find(".publish-unit"))
-      const lastPublish = checkboxs.find((d) => !d.checked).parentNode.childNodes[1].textContent
-      const lastPublishId = lastPublish.match(/\d+/g).map(Number)[0]
-      return { name: lastPublish, id: lastPublishId }
+      let lastPublishDate = checkboxs.find((d) => d.checked).parentNode.parentNode.children[4].innerText
+      lastPublishDate = lastPublishDate ? moment(lastPublishDate, "DD-MM-YYYY") : null
+      console.log("LAST PUB DATE", lastPublishDate.toString(), moment().diff(lastPublishDate, "days"))
+      let out = {}
+      const lastChecked = checkboxs.find((d) => !d.checked)
+      if (!lastPublishDate || lastPublishDate.toString(), moment().diff(lastPublishDate, "days") >= 1) {
+        out.name = lastChecked.parentNode.childNodes[1].textContent
+      } else {
+        out.name = checkboxs[checkboxs.indexOf(lastChecked) - 1].parentNode.childNodes[1].textContent
+        console.log("get before last", out.name)
+      }
+      out.id = out.name.match(/\d+/g).map(Number)[0]
+      return out
     }
 
-    function addPublishButton(appendTo, lastPublish, classeInfo) {
-      $('<button/>').text(lastPublish.name).css("margin-left", 10)
+    function addPublishButton(appendTo, toPublish, classeInfo) {
+      $('<button/>').text(toPublish.name).css("margin-left", 10)
         .click(() => window.open(getPublishContentURL(classeInfo.courseID), '_blank'))
         .appendTo($(appendTo).parent())
     }
@@ -79,13 +80,11 @@ function homePage() {
       if (!classeInfo) return
       console.log("classInfo", classeInfo)
       const classDoc = fetchClassPubhlish(classeInfo.courseID)
-      const lastPublish = getLastPublish(classDoc)
-      addPublishButton(currentClass[i], lastPublish, classeInfo)
-      if (!historic[classeInfo.name][lastPublish.id] || Date.now() - historic[classeInfo.name][lastPublish.id].date < 3600000 * 1) { //add only if older than (3600000 = 1h) after class end 
-        Historic.addClass(classeInfo, lastPublish)
-      }
+      const toPublish = getToPublish(classDoc)
+      addPublishButton(currentClass[i], toPublish, classeInfo)
+      console.log("after publish button", toPublish)
+      Historic.addClass(classeInfo, toPublish)
       console.log("end", classeInfo)
-      //addClassToHistoric(classeInfo, lastPublish)
     }
     console.log("end handle class")
 
@@ -100,14 +99,14 @@ function homePage() {
     }
 
     function addCourseLine(course, courseDate) {
-      const div = $("<div/>").insertBefore(anchor)
-      const title = $("<h4/>").text(course.class.name + " -- " + course.unit).appendTo(div)
-      const b1 = $("<button/>").text("Missed").css("margin-left", "10px").css("background-color", "#e57373").click(() => {
-        Historic.setValidated(course, "missed")
+      const div = $("<div/>").css("display", "flex").css("align-items", "center").insertBefore(anchor)
+      $("<h4/>").css("margin", 0).text(course.class.name + " -- " + course.unit).appendTo(div)
+      $("<button/>").text("Missed").css("margin-left", "10px").css("background-color", "#e57373").click(() => {
+        Historic.setValidated(course.class.name, course.id, "missed")
         div.remove();
       }).appendTo(div)
-      const b2 = $("<button/>").text("Done").css("margin-left", "10px").css("background-color", "#4caf50").click(() => {
-        Historic.setValidated(course, "done")
+      $("<button/>").text("Done").css("margin-left", "10px").css("background-color", "#4caf50").click(() => {
+        Historic.setValidated(course.class.name, course.id, "done")
         div.remove();
       }).appendTo(div)
     }
@@ -121,6 +120,7 @@ function homePage() {
       if (courseDate.diff(lastDate, 'days') >= 1)
         addDateLine(courseDate)
       addCourseLine(course, courseDate)
+      lastDate = courseDate
     })
   }
 
